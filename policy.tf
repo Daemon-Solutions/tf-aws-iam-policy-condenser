@@ -1,15 +1,8 @@
-locals {
-  policies = [
-    "${data.aws_iam_policy_document.s3_readonly.*.json}",
-    "${data.aws_iam_policy_document.s3_write.*.json}",
-  ]
-}
-
-data "external" "policy_generator" {
-  program = ["python3", "${path.module}/policy_generator.py"]
+data "external" "policy_condenser" {
+  program = ["/usr/bin/env", "python3", "${path.module}/policy_condenser.py", "--log"]
 
   query = {
-    input_policies      = "${jsonencode(local.policies)}"
+    input_policies      = "${jsonencode(var.input_policies)}"
     policy_length_limit = "${lookup(var.policy_type_length_limit, var.policy_type)}"
     policy_version      = "${var.policy_version}"
   }

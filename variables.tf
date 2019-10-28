@@ -1,25 +1,6 @@
-variable "s3_readonly" {
-  description = "Bit indicating whether to create a role policy to allow List/Get objects in a bucket"
-  type        = "string"
-  default     = "0"
-}
-
-variable "s3_read_buckets" {
-  description = "A list of s3 buckets to create read role policies on"
+variable "input_policies" {
+  description = "A list of IAM policy JSON strings to merge into as few policy documents as possible."
   type        = "list"
-  default     = []
-}
-
-variable "s3_write" {
-  description = "Bit indicating whether to create a role policy to allow full access to a bucket"
-  type        = "string"
-  default     = "0"
-}
-
-variable "s3_write_buckets" {
-  description = "A list of s3 buckets to create write role policies on"
-  type        = "list"
-  default     = []
 }
 
 variable "policy_type" {

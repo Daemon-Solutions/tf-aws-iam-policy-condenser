@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import argparse
 import base64
 import json
 import sys
@@ -30,11 +31,31 @@ def create_new_policy(policy_version):
 
 
 if __name__ == "__main__":
-    query = json.load(sys.stdin)
-    with open('terraformQuery.json', 'w') as terraformQuery:
-        json.dump(query, terraformQuery)
-    # with open('terraformQuery.json', 'rb') as terraformQuery:
-    #     query = json.load(terraformQuery)
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--debug',
+        '-d',
+        help="Debug mode, reads log generated as log as input.",
+        action='store_true'
+    )
+    parser.add_argument(
+        '--log',
+        '-l',
+        help="Log input to terraformQuery.json",
+        action='store_true'
+    )
+    args = parser.parse_args()
+
+
+    if args.log:
+        query = json.load(sys.stdin)
+        with open('terraformQuery.json', 'w') as terraformQuery:
+            json.dump(query, terraformQuery)
+    elif args.debug:
+        with open('terraformQuery.json', 'rb') as terraformQuery:
+            query = json.load(terraformQuery)
+    else:
+        query = json.load(sys.stdin)
 
     policies = []
     statements = get_input_statement_list(query)
@@ -54,7 +75,9 @@ if __name__ == "__main__":
 
     policies.append(json.dumps(policy))
 
-    # Output the list of policies to Terraform
+    # Output the list of policies to Terraform (base64 encoded because
+    # terraform can't handle anything but strings being returned from external
+    # datasources)
     output = {
         'policies': ""
     }

@@ -1,5 +1,5 @@
 locals {
-  output_policies = "${split(",", lookup(data.external.policy_generator.result, "policies"))}"
+  output_policies = "${split(",", lookup(data.external.policy_condenser.result, "policies"))}"
 }
 
 data "null_data_source" "policies" {
