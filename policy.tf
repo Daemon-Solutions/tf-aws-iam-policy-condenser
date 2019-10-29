@@ -1,5 +1,5 @@
 data "external" "policy_condenser" {
-  program = ["/usr/bin/env", "python3", "${path.module}/policy_condenser.py", "--log"]
+  program = ["python3", "${path.module}/policy_condenser.py"]
 
   query = {
     input_policies      = "${jsonencode(var.input_policies)}"
