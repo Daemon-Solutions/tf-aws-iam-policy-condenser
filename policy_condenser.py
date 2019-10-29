@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 import argparse
 import base64
-import deque
 import json
 import pdb
 import sys
+
+from collections import deque
 
 
 def get_input_statement_list(input_query):
