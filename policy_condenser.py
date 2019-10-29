@@ -93,16 +93,16 @@ if __name__ == "__main__":
     # Output the list of policies to Terraform (base64 encoded because
     # terraform can't handle anything but strings being returned from external
     # datasources)
-    output = {"policies": ""}
+    output = {"b64_policies": ""}
 
     for policy in policies:
-        if output["policies"] == "":
-            output["policies"] += "{}".format(
-                base64.b64encode(policy.encode()).decode()
+        if output["b64_policies"] == "":
+            output["b64_policies"] += "{}".format(
+                base64.b64encode(json.dumps(policy).encode()).decode()
             )
         else:
-            output["policies"] += ",{}".format(
-                base64.b64encode(policy.encode()).decode()
+            output["b64_policies"] += ",{}".format(
+                base64.b64encode(json.dumps(policy).encode()).decode()
             )
 
     json.dump(output, sys.stdout, indent=2)
