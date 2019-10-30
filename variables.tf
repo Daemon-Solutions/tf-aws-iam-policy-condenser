@@ -9,7 +9,8 @@ variable "policy_type" {
 }
 
 variable "policy_type_length_limit" {
-  type = "map"
+  description = "A map containing maximum length of the various types of IAM policy (user, group or role)."
+  type        = "map"
 
   default = {
     group = 10240
@@ -19,6 +20,7 @@ variable "policy_type_length_limit" {
 }
 
 variable "policy_version" {
-  type    = "string"
-  default = "2012-10-17"
+  description = "The IAM policy version to use when generating the condensed policies."
+  type        = "string"
+  default     = "2012-10-17"
 }
