@@ -10,7 +10,7 @@ import base64
 def test_condenser():
     condenser_script_path = os.path.normpath(
         os.path.join(
-            os.path.split(os.path.realpath(__file__))[0], "..", "..", "policy_condenser.py"
+            os.path.dirname(os.path.realpath(__file__)), "..", "..", "policy_condenser.py"
         )
     )
 
