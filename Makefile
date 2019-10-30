@@ -24,4 +24,5 @@ README.md: ## Updates README.md using terraform-docs
 .PHONY: tests
 tests: ## Runs tests against the policy-condenser.py part of the module
 	@if ! python -c "import pytest" &>/dev/null; then echo "The tests require pytest. Please install pytest and re run."; exit 1; fi
-	@cd tests && pytest
+	@if ! python -c "import python_terraform" &>/dev/null; then echo "The tests require python-terraform. Please install python-terraform and re run."; exit 1; fi
+	@cd tests/python && pytest -v
