@@ -106,5 +106,7 @@ if __name__ == "__main__":
                 base64.b64encode(json.dumps(policy).encode()).decode()
             )
 
+    output["policy_count"] = str(len(policies))
+
     json.dump(output, sys.stdout, indent=2)
     sys.stdout.write("\n")

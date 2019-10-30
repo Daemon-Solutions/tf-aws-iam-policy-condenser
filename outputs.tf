@@ -3,7 +3,7 @@ locals {
 }
 
 data "null_data_source" "policies" {
-  count = "${length(local.b64_output_policies)}"
+  count = "${lookup(data.external.policy_condenser.result, "policy_count")}"
 
   inputs = {
     policies = "${base64decode(element(local.b64_output_policies, count.index))}"

@@ -11,6 +11,12 @@ test_dir = os.path.normpath(
 
 
 def test_terraform():
+    # Check Terraform version
+    terraform_version_proc = subprocess.run(
+        ["terraform", "version", "-no-color"], cwd=test_dir, capture_output=True
+    )
+
+    assert str(terraform_version_proc.stdout).find('0.11.14') != -1
 
     # Run Terraform init
     terraform_init_proc = subprocess.run(

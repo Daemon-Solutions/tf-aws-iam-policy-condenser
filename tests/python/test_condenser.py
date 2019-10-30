@@ -29,6 +29,10 @@ def test_condenser():
 
     assert "b64_policies" in condenser_output
 
+    assert "policy_count" in condenser_output
+    assert type(condenser_output["policy_count"]) == str
+    assert condenser_output["policy_count"] == "3"
+
     b64_policy_list = condenser_output["b64_policies"].split(",")
 
     assert len(b64_policy_list) == 3
