@@ -1,1 +1,6 @@
 terraformQuery.json
+tests/python/__pycache__/
+tests/terraform/.terraform/
+tests/terraform/terraform.tfstate
+tests/terraform/terraform.tfstate.backup
+tests/terraform/test.tfplan
