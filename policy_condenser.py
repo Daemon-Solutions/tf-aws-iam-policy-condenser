@@ -35,21 +35,20 @@ if __name__ == "__main__":
     parser.add_argument(
         "--debug",
         "-d",
-        help="Debug mode, reads log generated as log as input.",
-        action="store_true",
+        help="Debug mode, reads specified file as input as it would normally with stdin input.",
     )
     parser.add_argument(
-        "--log", "-l", help="Log input to terraformQuery.json", action="store_true"
+        "--log", "-l", help="Logs input JSON to the specified file"
     )
 
     args = parser.parse_args()
 
     if args.log:
         query = json.load(sys.stdin)
-        with open("terraformQuery.json", "w") as terraformQuery:
+        with open(args.log, "w") as terraformQuery:
             json.dump(query, terraformQuery)
     elif args.debug:
-        with open("terraformQuery.json", "rb") as terraformQuery:
+        with open(args.debug, "rb") as terraformQuery:
             query = json.load(terraformQuery)
     else:
         query = json.load(sys.stdin)
@@ -78,8 +77,10 @@ if __name__ == "__main__":
                 # If that is the case then the statement itself is too big.
                 if len(policies[-1]["Statement"]) == 1:
                     raise ValueError(
-                        "statement exceeds policy length limit: {}".format(
-                            statements[0]
+                        "Statement exceeds policy length limit (Length: {Length} + Policy boilerplate, Limit: {Limit})): {Policy}".format(
+                            Length=len(json.dumps(policies[-1])),
+                            Limit=policy_length_limit,
+                            Policy=json.dumps(policies[-1]["Statement"][0]),
                         )
                     )
 
