@@ -1,3 +1,1 @@
 pytest
-https://github.com/beelit94/python-terraform/archive/0.10.1.tar.gz
-git+http://github.com/beelit94/python-terraform.git@release/0.10.2#egg=python-terraform
