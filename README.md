@@ -8,7 +8,7 @@ Tests against the Python part of the condenser module by running:
 
   make test
 
-at the project root.
+at the project root. *Note* These tests require Pytest.
 
 ## Inputs
 
