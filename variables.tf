@@ -13,9 +13,9 @@ variable "policy_type_length_limit" {
   type        = "map"
 
   default = {
-    group = 10240
-    role  = 5120
     user  = 2048
+    group = 5120
+    role  = 10240
   }
 }
 
