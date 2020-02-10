@@ -5,36 +5,36 @@ variable "apigateway_read" {
 
 variable "apigateway_read_apis" {
   description = "A list of APIGateway APIs to allow reading from"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "apigateway_write" {
   description = "Bit indicating whether to create a policy to allow write access to APIGateway APIs"
-  type        = "string"
+  type        = string
   default     = false
 }
 
 variable "apigateway_write_apis" {
   description = "A list of APIGateway APIs to allow writing to"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "apigateway_full_access" {
   description = "Bit indicating whether to create a policy to allow full access to APIGateway APIs"
-  type        = "string"
+  type        = string
   default     = false
 }
 
 variable "apigateway_full_access_apis" {
   description = "A list of APIGateway APIs to allow full access to"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 data "aws_iam_policy_document" "apigateway_read" {
-  count = "${var.apigateway_read}"
+  count = var.apigateway_read ? 1 : 0
 
   statement {
     sid = "APIGatewayReadOnlyAccessAPIs"
@@ -43,12 +43,12 @@ data "aws_iam_policy_document" "apigateway_read" {
       "apigateway:GET",
     ]
 
-    resources = ["${var.apigateway_read_apis}"]
+    resources = var.apigateway_read_apis
   }
 }
 
 data "aws_iam_policy_document" "apigateway_write" {
-  count = "${var.apigateway_write}"
+  count = var.apigateway_write ? 1 : 0
 
   statement {
     sid = "APIGatewayWriteAccessAPIs"
@@ -62,14 +62,12 @@ data "aws_iam_policy_document" "apigateway_write" {
       "apigateway:UpdateRestApiPolicy",
     ]
 
-    resources = [
-      "${var.apigateway_write_apis}",
-    ]
+    resources = var.apigateway_write_apis
   }
 }
 
 data "aws_iam_policy_document" "apigateway_full_access" {
-  count = "${var.apigateway_full_access}"
+  count = var.apigateway_full_access ? 1 : 0
 
   statement {
     sid = "APIGatewayFullAccessAPIs"
@@ -78,8 +76,6 @@ data "aws_iam_policy_document" "apigateway_full_access" {
       "apigateway:*",
     ]
 
-    resources = [
-      "${var.apigateway_full_access_apis}",
-    ]
+    resources = var.apigateway_full_access_apis
   }
 }

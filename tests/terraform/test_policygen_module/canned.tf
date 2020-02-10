@@ -4,7 +4,7 @@ variable "cloudcraft_access" {
 }
 
 data "aws_iam_policy_document" "cloudcraft_access" {
-  count = "${var.cloudcraft_access}"
+  count = var.cloudcraft_access ? 1 : 0
 
   statement {
     actions = [

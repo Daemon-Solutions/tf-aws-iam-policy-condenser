@@ -10,7 +10,7 @@ variable "s3_readonly" {
 
 variable "s3_read_buckets" {
   description = "A list of S3 buckets to create allow access to via the generated policies"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -21,7 +21,7 @@ variable "s3_write" {
 
 variable "s3_write_buckets" {
   description = "A list of S3 buckets to create policies to allow writing to"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -32,12 +32,12 @@ variable "s3_full_access" {
 
 variable "s3_full_access_buckets" {
   description = "A list of S3 buckets to create policies to allow full access to"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 data "aws_iam_policy_document" "s3_list" {
-  count = "${var.s3_list || var.s3_readonly || var.s3_write || var.s3_full_access ? "1" : "0"}"
+  count = var.s3_list || var.s3_readonly || var.s3_write || var.s3_full_access ? "1" : "0"
 
   statement {
     sid = "S3ListBuckets"
@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "s3_list" {
 }
 
 data "aws_iam_policy_document" "s3_readonly" {
-  count = "${var.s3_readonly}"
+  count = var.s3_readonly ? 1 : 0
 
   statement {
     sid = "S3ReadAccessBuckets"
@@ -62,12 +62,12 @@ data "aws_iam_policy_document" "s3_readonly" {
       "s3:Get*",
     ]
 
-    resources = "${concat(formatlist("%v", var.s3_read_buckets), formatlist("%v/*", var.s3_read_buckets))}"
+    resources = concat(formatlist("%v", var.s3_read_buckets), formatlist("%v/*", var.s3_read_buckets))
   }
 }
 
 data "aws_iam_policy_document" "s3_write" {
-  count = "${var.s3_write}"
+  count = var.s3_write ? 1 : 0
 
   statement {
     sid = "S3WriteAccessBuckets"
@@ -80,16 +80,16 @@ data "aws_iam_policy_document" "s3_write" {
       "s3:DeleteObject",
     ]
 
-    resources = "${concat(formatlist("%v", var.s3_write_buckets), formatlist("%v/*", var.s3_write_buckets))}"
+    resources = concat(formatlist("%v", var.s3_write_buckets), formatlist("%v/*", var.s3_write_buckets))
   }
 }
 
 data "aws_iam_policy_document" "s3_full_access" {
-  count = "${var.s3_full_access}"
+  count = var.s3_full_access ? 1 : 0
 
   statement {
     sid       = "S3FullAccessBuckets"
     actions   = ["s3:*"]
-    resources = "${concat(formatlist("%v", var.s3_full_access_buckets), formatlist("%v/*", var.s3_full_access_buckets))}"
+    resources = concat(formatlist("%v", var.s3_full_access_buckets), formatlist("%v/*", var.s3_full_access_buckets))
   }
 }

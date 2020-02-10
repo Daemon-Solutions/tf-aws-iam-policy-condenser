@@ -1,8 +1,8 @@
 module "test_user_iam_policy" {
   source = "./test_policygen_module"
 
-  policy_type              = "${var.policy_type}"
-  policy_type_length_limit = "${var.policy_type_length_limit}"
+  policy_type              = var.policy_type
+  policy_type_length_limit = var.policy_type_length_limit
 
   s3_readonly   = "1"
   s3_write      = "1"
@@ -60,10 +60,12 @@ module "test_user_iam_policy" {
 }
 
 resource "aws_iam_policy" "user_policies" {
-  count  = "${length(module.test_user_iam_policy.policies)}"
-  policy = "${lookup(module.test_user_iam_policy.policies[count.index], "policies")}"
+  count  = module.test_user_iam_policy.policy_count
+  policy = module.test_user_iam_policy.policies[count.index]
 }
 
+
+
 output "policies" {
-  value = "${module.test_user_iam_policy.policies}"
+  value = module.test_user_iam_policy.policies
 }

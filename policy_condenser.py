@@ -15,7 +15,9 @@ def get_input_statement_list(input_query):
     """
     input_statements = []
     for input_policy in json.loads(input_query["input_policies"]):
-        for input_policy_statement in json.loads(input_policy)["Statement"]:
+        if len(input_policy) == 0:
+            continue
+        for input_policy_statement in json.loads(input_policy[0])["Statement"]:
             input_statements.append(input_policy_statement)
     return input_statements
 

@@ -4,6 +4,7 @@ import os
 import os.path
 import pytest
 import subprocess
+import pdb
 
 test_dir = os.path.normpath(
     os.path.join(os.path.realpath(__file__), "..", "..", "terraform")
@@ -16,7 +17,7 @@ def test_terraform():
         ["terraform", "version", "-no-color"], cwd=test_dir, capture_output=True
     )
 
-    assert str(terraform_version_proc.stdout).find('0.11.14') != -1
+    assert str(terraform_version_proc.stdout).find('0.12.20') != -1
 
     # Run Terraform init
     terraform_init_proc = subprocess.run(
@@ -43,11 +44,8 @@ def test_terraform():
     # Read the Terraform state file
     with open(os.path.join(test_dir, "terraform.tfstate")) as state_file:
         tfstate = json.load(state_file)
-
     # Check it created the correct number of policies
-    for module in tfstate['modules']:
-        if module["path"] == ["root"]:
-            assert len(module['outputs']['policies']["value"]) == 2
+    assert len(tfstate['outputs']['policies']["value"]) == 2
 
     # Destroy to clean up the policies
     terraform_destroy_proc = subprocess.run(
@@ -60,3 +58,4 @@ def test_terraform():
 
 if __name__ == "__main__":
     print(test_dir)
+    test_terraform()
