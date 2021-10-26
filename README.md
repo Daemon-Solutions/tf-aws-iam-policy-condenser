@@ -2,6 +2,14 @@
 
 Takes a list of IAM policies in JSON format and condenses the statements from them into as few as possible IAM policy documents based on the IAM policy length limits for the requested IAM policy type (user, group or role).
 
+## Terraform version compatibility
+
+| Module version | Terraform version |
+|----------------|-------------------|
+| 2.x.x          | 0.12.x            |
+| 1.x.x          | 0.11.x            |
+
+
 ## Tests
 
 Tests against the Python part of the condenser module by running:
